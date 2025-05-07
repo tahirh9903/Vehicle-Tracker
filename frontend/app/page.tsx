@@ -457,7 +457,7 @@ export default function Home() {
     
     // Remove empty filters
     const nonEmptyFilters = Object.fromEntries(
-      Object.entries(filters).filter(([_, value]) => value !== '')
+      Object.entries(filters).filter(entry => entry[1] !== '')
     );
     
     try {
@@ -530,7 +530,9 @@ export default function Home() {
       // Process driver analysis
       const driverStats = accidents.reduce((acc: { [key: string]: number }, curr) => {
         const status = curr.driver?.license_status || 'Unknown';
-        acc[status] = (acc[status] || 0) + 1;
+        if (status !== 'Unknown') {  // Only add to stats if not Unknown
+          acc[status] = (acc[status] || 0) + 1;
+        }
         return acc;
       }, {});
 
